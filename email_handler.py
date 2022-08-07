@@ -5,6 +5,8 @@ from email.mime.base import MIMEBase
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 import os
+
+# this module is used to store variables securely
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -13,7 +15,7 @@ load_dotenv()
 
 def send_email(subject = "email for test", 
                body :str = "For more information, contact the API administrator", 
-               to_email = "devstestemail@gmail.com" , 
+               to_email = "4devstestemail5676577ghyjugtyu@gmail.com" , 
                from_email = "4devstestemail@gmail.com", 
                filename = None) -> None:
     
@@ -75,7 +77,20 @@ def send_email(subject = "email for test",
     # Log in to server using secure context and send email
     context = ssl.create_default_context()
     with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) as server:
-        server.login(from_email, password)
-        server.sendmail(from_email, to_email, text)
+        try:
+            server.login(from_email, password)
+        except smtplib.SMTPAuthenticationError as e:
+            #print(e)
+            print("Connection failed or Wrong User/Password")
+            return
+
+        try:
+            
+            server.sendmail(from_email, to_email, text)
+        except smtplib.SMTPRecipientsRefused as e:
+            print(f"Wrong recipient: {e} \nNot an email address?")
+        except Exception as e:
+            print(e)
+        
 
 

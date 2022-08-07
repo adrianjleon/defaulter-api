@@ -1,3 +1,4 @@
+import smtpd
 from calendar_functions import is_last_tuesday, get_cronogram_by_year
 from email_handler import send_email
 
@@ -28,5 +29,8 @@ from email_handler import send_email
 #print(get_cronogram_by_year(2026)) 
 
 send_email()
+
+
+
 
 
