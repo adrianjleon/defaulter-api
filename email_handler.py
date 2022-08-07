@@ -9,20 +9,21 @@ import os
 
 
 
-def send_email(subject = "Monthly report", 
+def send_email(subject = "email for test", 
                body :str = "For more information, contact the API administrator", 
-               to_email = "4devstestemail@gmail.com" , 
+               to_email = "labtopp2@gmail.com" , 
                from_email = "4devstestemail@gmail.com", 
-               filename = "example.txt"):
+               filename = None) -> None:
     
     """
-    Send email with attachment
+    Send email with an attachment passing the filename as a parameter
+    if no parameter is sent, the email will be sent as a test email
     """
     
     html = f"""\
     <html>
     <body>
-        <p><h2>Hi</h2>,<br>
+        <p>Hi,<br>
         {body}  <br>
         <a href="https://www.youtube.com.com">youtube</a> 
         
@@ -46,25 +47,27 @@ def send_email(subject = "Monthly report",
     basepath = os.path.dirname(os.path.abspath(__file__))
     filepath = os.path.join(basepath, f"output/{filename}")
     #/home/limitado/Documents/adrian-python/proyectos/morosidad/output/example.txt
+    
+    if filename:
+        # Open txt file in binary mode
+        with open(filepath, "rb") as attachment:
+            # Add file as application/octet-stream
+            # Email client can usually download this automatically as attachment
+            part = MIMEBase("application", "octet-stream")
+            part.set_payload(attachment.read())
 
-    # Open txt file in binary mode
-    with open(filepath, "rb") as attachment:
-        # Add file as application/octet-stream
-        # Email client can usually download this automatically as attachment
-        part = MIMEBase("application", "octet-stream")
-        part.set_payload(attachment.read())
+        # Encode file in ASCII characters to send by email    
+        encoders.encode_base64(part)
 
-    # Encode file in ASCII characters to send by email    
-    encoders.encode_base64(part)
+        # Add header as key/value pair to attachment part
+        part.add_header(
+            "Content-Disposition",
+            f"attachment; filename= {filename}",
+        )
 
-    # Add header as key/value pair to attachment part
-    part.add_header(
-        "Content-Disposition",
-        f"attachment; filename= {filename}",
-    )
+        # Add attachment to message and convert message to string
+        message.attach(part)
 
-    # Add attachment to message and convert message to string
-    message.attach(part)
     text = message.as_string()
 
     # Log in to server using secure context and send email
@@ -74,4 +77,3 @@ def send_email(subject = "Monthly report",
         server.sendmail(from_email, to_email, text)
 
 
-send_email()
