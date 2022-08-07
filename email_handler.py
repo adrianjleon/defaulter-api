@@ -5,13 +5,15 @@ from email.mime.base import MIMEBase
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 import os
+from dotenv import load_dotenv
+load_dotenv()
 
 
 
 
 def send_email(subject = "email for test", 
                body :str = "For more information, contact the API administrator", 
-               to_email = "labtopp2@gmail.com" , 
+               to_email = "devstestemail@gmail.com" , 
                from_email = "4devstestemail@gmail.com", 
                filename = None) -> None:
     
@@ -31,7 +33,7 @@ def send_email(subject = "email for test",
     </body>
     </html>
     """
-    password = "mfthlcvzzqjjzcgw" # input("Type your password and press enter:")
+    password =  os.environ.get('email_password') # input("Type your password and press enter:")
 
     # Create a multipart message and set headers
     message = MIMEMultipart()

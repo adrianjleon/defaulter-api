@@ -28,3 +28,5 @@ from email_handler import send_email
 #print(get_cronogram_by_year(2026)) 
 
 send_email()
+
+
