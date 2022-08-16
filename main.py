@@ -13,12 +13,20 @@ from calendar_functions import is_last_tuesday, get_cronogram_by_year
 # containerize the app
 # put it into a VM Virtualbox
 
+year = 2023
+
+result_this_last_tuesday_month = is_last_tuesday()
+
+cronogram_by_year = get_cronogram_by_year(year)
+
+# delete the following  lines when you are done with the testing
+from datetime import datetime
+import random
+today_is = datetime.today()
 
 
-
-print("hola")
-print(is_last_tuesday())
-print(get_cronogram_by_year(2026)) 
+with open(f"/app/prueba{today_is}.txt", "a") as file:
+    file.write(f"result_this_last_tuesday_month { result_this_last_tuesday_month } \n {cronogram_by_year } by year {year} \n")
 
 
 
